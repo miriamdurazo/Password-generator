@@ -90,16 +90,35 @@ var upperCasedCharacters = [
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  let pwdLen = prompt("Choose how long you password will be: type a number from 10 to 64");
+  let pwdLenNum = parseInt(pwdLen);
+  if (pwdLenNum < 10 || pwdLenNum > 64) {
+    alert("The number you chose is out of range")
+  }
+  let charsTypes = ["lowercase", "uppercase", "numeric", "special ($@%&*, etc)"];
+  let userChoices = { passwordLength: pwdLenNum};
+  for (const characterType in charsTypes) {
+    userChoices[charsTypes[characterType]] = confirm(`Do you want your password to include ${charsTypes[characterType]} characters?`);
+    // console.log(userChoices);  
+  }
+  // console.log(userChoices); 
+  return userChoices;
+  }
+  
 
-}
 
 // Function for getting a random element from an array
 function getRandom(arr) {
-
+  return Math.floor(Math.random() * arr.length)
 }
 
 // Function to generate password with user input
 function generatePassword() {
+  getPasswordOptions();
+  let charsArray = [lowerCasedCharacters, upperCasedCharacters, numericCharacters, specialCharacters]
+  // for (i = 0; i < pwdLenNum; i++) {
+
+  // }
 
 }
 
