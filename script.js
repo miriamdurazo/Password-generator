@@ -87,23 +87,27 @@ var upperCasedCharacters = [
   'Y',
   'Z'
 ];
+// Array of character type names 
+let charsTypes = ["lowercase", "uppercase", "numeric", "special"];
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  // Ask the user what their password length should be
   let pwdLen = prompt("Choose the length of your password: enter a number from 10 to 64");
+  // Test whether the user has added letters to the input and ask them to enter a valid number
   if  (/[a-zA-Z]/.test(pwdLen)) {
     alert("Sorry, that is not a valid number");
-    pwdLen = prompt("Please enter number from 10 to 64");
-  } 
-
+    pwdLen = prompt("Please enter a valid number from 10 to 64");
+  }
+  // Convert the string input into a number
   let pwdLenNum = parseInt(pwdLen);
-  if (pwdLenNum < 10 || pwdLenNum > 64) {
-    alert("The number you chose is out of range")
+  // 
+  if ((pwdLenNum < 10) || (pwdLenNum > 64)) {
+    alert("The number you chose is out of range");
+    pwdLen = prompt("Please enter a valid number from 10 to 64");
   }
 
-  let charsTypes = ["lowercase", "uppercase", "numeric", "special ($@%&*, etc)"];
   let userChoices = { passwordLength: pwdLenNum};
-  
   for (const characterType in charsTypes) {
     userChoices[charsTypes[characterType]] = confirm(`Do you want your password to include ${charsTypes[characterType]} characters?`);
     // console.log(userChoices);  
@@ -112,8 +116,6 @@ function getPasswordOptions() {
   return userChoices;
   }
   
-
-
 // Function for getting a random element from an array
 function getRandom(arr) {
   return Math.floor(Math.random() * arr.length)
@@ -121,12 +123,34 @@ function getRandom(arr) {
 
 // Function to generate password with user input
 function generatePassword() {
-  getPasswordOptions();
-  let charsArray = [lowerCasedCharacters, upperCasedCharacters, numericCharacters, specialCharacters]
-  // for (i = 0; i < pwdLenNum; i++) {
+  let userSelection = getPasswordOptions(); // Saved the object with user choices
 
-  // }
+  let userSelArray = [] // Created an array to store the types of characters that the user wants to add to her password
+  let pwd = ''
 
+  // Add all the elements of the arrays containing the type of characters the user wanted to the user selection array
+  if (userSelection["lowercase"]) {
+    userSelArray.push(...lowerCasedCharacters);
+  } 
+  
+  if (userSelection["uppercase"]) {
+    userSelArray.push(...upperCasedCharacters);
+  } 
+  
+  if (userSelection["numeric"]) {
+    userSelArray.push(...numericCharacters);
+  } 
+  if (userSelection["special"]) {
+    userSelArray.push(...specialCharacters);
+  }
+  // Generate random numbers based on the user selection array length and use that number as an index to choose a character to add to the password
+  for (i = 0; i < userSelection.passwordLength; i++) {
+    randIndex = getRandom(userSelArray);
+    pwd += userSelArray[randIndex];
+  } 
+  // console.log(pwd);
+  // console.log(pwd.length);
+  return pwd;
 }
 
 // Get references to the #generate element
